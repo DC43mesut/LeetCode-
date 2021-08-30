@@ -1,1 +1,58 @@
+思路：做两次二分查找，分别找出两次的二分查找下标，否则就返回[-1,-1]，将[1,r]区间分为
+版本1：[1,mid],[mid+1,r] 
+版本1的值更新方式为：r = mid, l = mid + 1， mid = (1+r)/2
+或者版本2：[1,mid-1],[mid,r]
+版本2的值更新方式为：r = mid - 1;  l = mid, mid = (1+r+1)/2
 
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* searchRange(int* nums, int numsSize, int target, int* returnSize)
+{
+    int left = 0;
+    int right = numsSize - 1;
+    int mid;
+    int* ret = malloc(sizeof(int) * 2);
+    *returnSize = 2;
+    if(numsSize == 0)
+    {
+        ret[0] = ret[1] = -1;
+        return ret;
+    }
+    while(left < right)
+    {
+        mid = (left + right) / 2;
+        if(nums[mid] >= target)
+        {
+            right = mid;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+    if(nums[right] != target)
+    {
+        ret[0] = ret[1] = -1;
+        return ret;
+    }
+    int L = right;
+    left = 0;
+    right = numsSize - 1; 
+    while(left < right)
+    {
+        mid = (1 + left + right) / 2;
+        if(nums[mid] <= target)
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+    ret[0] = L;
+    ret[1] = right;
+    return ret;
+}
