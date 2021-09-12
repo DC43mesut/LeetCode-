@@ -31,4 +31,3 @@ bool backspaceCompare(char* S, char* T) {
         return false;
     }
 }
-
